@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MZ App Studio — Flutter MVPs from Figma & XD</title>
+  <meta name="description" content="We turn your Figma and Adobe XD designs into high-performance Android apps using Flutter. Fast, reliable, and launch-ready MVPs." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{
+      --bg-start:#0b1e3a;
+      --bg-end:#3a0b6b;
+      --accent:#7c4dff;
+      --accent-2:#4be3ff;
+      --text:#e6e9f0;
+      --muted:#aab2c5;
+      --border:#1b376b;
+      --shadow:0 10px 30px rgba(0,0,0,0.35);
+      --radius:18px;
+      --maxw:1100px;
+      --gap:22px;
+    }
+    *{box-sizing:border-box; margin:0; padding:0}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Helvetica,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(124,77,255,0.12), transparent 60%),
+        radial-gradient(1000px 500px at 95% 10%, rgba(75,227,255,0.12), transparent 60%),
+        linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      background-attachment: fixed;
+      overflow-x: hidden;
+      padding-top: 64px; /* Add padding to prevent content from hiding under fixed header */
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 22px}
+    
+    /* FIXED NAVIGATION BAR - ALWAYS VISIBLE */
+    header{
+      position:fixed; /* Changed from sticky to fixed */
+      top:0;
+      left:0;
+      right:0;
+      z-index:1000;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background: rgba(12,25,54,0.8); /* Single color with 80% opacity */
+backdrop-filter: saturate(1.2) blur(10px); /* Keep the blur effect */
+      border-bottom:1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      height:64px;
+      position: relative;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:0.3px;
+      z-index: 101;
+    }
+    .brand-badge{
+      width:34px;height:34px;border-radius:10px;
+      background:conic-gradient(from 140deg, var(--accent), var(--accent-2), var(--accent));
+      box-shadow:0 0 18px rgba(124,77,255,0.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .brand-badge img{
+      width:24px;
+      height:24px;
+      object-fit:contain;
+    }
+    .nav-links{
+      display:flex;gap:18px;
+      transition: all 0.3s ease;
+    }
+    .nav-links a{
+      padding:10px 14px;
+      border-radius:10px;
+      transition:all .25s ease;
+      position: relative;
+    }
+    .nav-links a:hover{
+      background-color:#112a54;
+    }
+    /* Active link indicator */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after {
+      width: 60%;
+    }
+    .cta{
+      display:inline-flex;align-items:center;gap:10px;
+      background:linear-gradient(135deg, var(--accent), #5a2dff);
+      color:white;border:none;border-radius:14px;padding:12px 18px;font-weight:700;
+      box-shadow:0 10px 24px rgba(124,77,255,0.45);
+      transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      cursor: pointer;
+    }
+    .cta:hover{transform:translateY(-1px);filter:saturate(1.1);box-shadow:0 14px 30px rgba(124,77,255,0.6)}
+    .cta.secondary{
+      background:transparent;border:1px solid var(--border);color:var(--text);
+      box-shadow:none;
+    }
+    .cta.secondary:hover{
+      background-color: rgba(255,255,255,0.05);
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    .mobile-menu-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Hero */
+    .hero{padding:92px 0 64px}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .9fr;gap:34px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--muted);margin-bottom:12px}
+    .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 12px var(--accent-2)}
+    h1{font-size:clamp(28px, 5vw, 48px);line-height:1.08;margin:8px 0 14px;text-shadow:0 2px 0 rgba(0,0,0,0.15)}
+    .subtitle{color:var(--muted);font-size:clamp(14px,2.4vw,18px);max-width:640px; line-height: 1.5;}
+    .hero-actions{display:flex;gap:14px;margin-top:22px;flex-wrap:wrap}
+    .hero-card{background:linear-gradient(180deg, rgba(21,45,92,0.8), rgba(21,45,92,0.5));border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+    .hero-visual{
+      width:100%;height:400px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-visual img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:18px;
+    }
+    .stat{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:#0f2246;border:1px solid var(--border)}
+    .glow{color:var(--accent-2);text-shadow:0 0 14px rgba(75,227,255,0.8)}
+
+    /* Sections */
+    section{padding:60px 0}
+    .section-title{font-size:26px;margin:0 0 16px}
+    .section-sub{color:var(--muted);margin-bottom:26px;max-width:760px; line-height: 1.5;}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+    .card{
+      background:linear-gradient(180deg, rgba(17,37,77,0.85), rgba(17,37,77,0.55));
+      border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(0,0,0,0.45);border-color:#2a4fa0}
+    .card h3{margin:0 0 8px;font-size:18px}
+    .card p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Portfolio carousel - SIMPLE WORKING VERSION */
+    .carousel-wrapper{
+      position:relative;
+      overflow:hidden;
+      padding:50px 0;
+      margin: 0 -22px;
+    }
+    .carousel-track{
+      display:flex;
+      gap:30px;
+      padding: 0 22px;
+      align-items: center;
+      transition: transform 0.5s ease;
+    }
+    .carousel-item{
+      flex: 0 0 300px;
+      border-radius:24px;
+      overflow:hidden;
+      user-select:none;
+      transition: all 0.3s ease;
+      position: relative;
+      background: rgba(17, 37, 77, 0.6);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .carousel-item.active {
+      transform: scale(1.08);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+      border-color: var(--accent);
+      z-index: 5;
+    }
+    .carousel-item.semi-active {
+      opacity: 0.8;
+      transform: scale(0.95);
+    }
+    .carousel-item img{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius: 24px;
+      object-fit: contain;
+    }
+    /* Device frame overlay for mobile screenshots */
+    .device-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 2;
+      border-radius: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+    }
+    .carousel-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(11, 30, 58, 0.95), rgba(11, 30, 58, 0.7));
+      color: white;
+      padding: 16px;
+      font-size: 15px;
+      text-align: center;
+      border-radius: 0 0 24px 24px;
+      backdrop-filter: blur(10px);
+      z-index: 3;
+    }
+    .device-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      z-index: 3;
+      backdrop-filter: blur(5px);
+    }
+    .carousel-button{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(17, 37, 77, 0.9);
+      color:white;
+      border:1px solid var(--border);
+      border-radius:50%;
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      z-index:10;
+      font-size:22px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+    .carousel-button:hover{
+      background:rgba(17, 37, 77, 1);
+      transform: translateY(-50%) scale(1.15);
+      border-color: var(--accent);
+    }
+    #prev{left:22px;}
+    #next{right:22px;}
+
+    /* Testimonials */
+    .stars{color:#ffd166;letter-spacing:2px; font-size: 18px;}
+    .quote{color:#c9d2e4; font-style: italic; line-height: 1.5;}
+
+    /* Form Styling */
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(15, 34, 70, 0.7);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    form input:focus, form textarea:focus, form select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.2);
+    }
+    form label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+    form label:hover {
+      color: var(--text);
+    }
+    form input[type="checkbox"] {
+      width: auto;
+      accent-color: var(--accent);
+    }
+    form fieldset {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    form legend {
+      padding: 0 10px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    /* Footer */
+    footer{
+      padding:40px 0;border-top:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(12,25,54,0.6), rgba(12,25,54,0.4));
+    }
+    .footer-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+    .socials{display:flex;gap:12px;flex-wrap:wrap}
+    .socials a{border:1px solid var(--border);padding:8px 12px;border-radius:10px;color:var(--muted);transition:all .2s}
+    .socials a:hover{border-color:#3a63c9;color:#cfe4ff}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero-grid{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr 1fr}
+      .footer-grid{grid-template-columns:1fr}
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+      .carousel-item {
+        flex: 0 0 260px;
+      }
+    }
+    @media (max-width:768px){
+      .mobile-menu-btn {
+        display: flex;
+      }
+      .nav-links {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: rgba(12,25,54,0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      }
+      .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+      .nav-links a {
+        padding: 15px;
+        text-align: center;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.05);
+        margin: 5px 0;
+      }
+      .carousel-item {
+        flex: 0 0 220px;
+      }
+      .carousel-button {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+    }
+    @media (max-width:620px){
+      .grid{grid-template-columns:1fr}
+      .carousel-item{flex:0 0 200px}
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-actions .cta {
+        width: 100%;
+        justify-content: center;
+      }
+      .carousel-button {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+      #prev{left:10px;}
+      #next{right:10px;}
+      .carousel-caption {
+        font-size: 13px;
+        padding: 12px;
+      }
+    }
+
+    /* Scroll reveal */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.show{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+  <!-- Nav - NOW FIXED AT TOP -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-badge">
+          <img src="images/logo.png" alt="MZ App Studio Logo">
+        </div>
+        <div>MZ App Studio</div>
+      </div>
+      <nav class="nav-links" id="navLinks">
+        <a href="#services">Services</a>
+        <a href="#sprint">48-Hour MVP</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#testimonials">Testimonials</a>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a class="cta" href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener">
+        Contact Me on WhatsApp
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Flutter for Android MVPs</div>
+        <h1>Your UI Designs, Delivered as High-Performance Android Apps</h1>
+        <p class="subtitle">We turn your design files into fast, reliable, and launch-ready Android apps. Figma or Adobe XD in — Flutter APK out.</p>
+        <div class="hero-actions">
+          <a class="cta" href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener">Contact Me on WhatsApp</a>
+          <a class="cta secondary" href="#portfolio">See Portfolio</a>
+        </div>
+        <div class="hero-card" style="margin-top:22px">
+          <div class="stat">
+            <span class="stars">★★★★★</span>
+            <strong style="margin-left:6px">4.9/5</strong>
+            <span class="muted" style="color:var(--muted);margin-left:8px">Client rating across recent MVPs</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-visual">
+          <img src="images/hero.png" alt="Figma to Flutter Development Process">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section id="services">
+    <div class="container">
+      <h2 class="section-title">Services</h2>
+      <p class="section-sub">Production-ready Flutter implementations from your Figma/XD designs, with seamless integration and polish.</p>
+      <div class="grid">
+        <div class="card reveal">
+          <h3>API integration</h3>
+          <p>REST/GraphQL wiring, secure auth flows, pagination, caching, and error handling for robust data experiences.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Firebase setup</h3>
+          <p>Auth, Firestore/RTDB, Storage, Cloud Functions, push notifications, and environment configuration.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Performance optimization</h3>
+          <p>Widget tree tuning, state management, lazy loading, and profiling to keep apps silky-smooth.</p>
+        </div>
+        <div class="card reveal">
+          <h3>App theming</h3>
+          <p>Pixel-accurate UI, dark mode, custom typography, and scalable design tokens that match your brand.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Release-ready builds</h3>
+          <p>Signing, build flavors, CI-ready project structure, and Play Store assets for a clean launch.</p>
+        </div>
+        <div class="card reveal">
+          <h3>MVP iterations</h3>
+          <p>Quick feedback loops and targeted improvements to validate features and drive conversions.</p>
+        </div>
+      </div>
+      <div style="margin-top:24px">
+        <a class="cta" href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener">Request a quote on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 48-Hour MVP Sprint -->
+  <section id="sprint">
+    <div class="container">
+      <h2 class="section-title">48-Hour MVP Sprint</h2>
+      <p class="section-sub">A rapid, fixed-scope build to get your idea in users' hands — fast.</p>
+      <div class="grid">
+        <div class="card reveal">
+          <h3>1. Handover</h3>
+          <p>Share Figma/XD, assets, and scope. We confirm flows, APIs, and priorities in a short kickoff.</p>
+        </div>
+        <div class="card reveal">
+          <h3>2. Build</h3>
+          <p>Implement core screens, state management, and integrations with performance-first practices.</p>
+        </div>
+        <div class="card reveal">
+          <h3>3. Launch</h3>
+          <p>Deliver APK/AAB, handoff notes, and a clear path to iterate — plus guidance on store submission.</p>
+        </div>
+      </div>
+      <div style="margin-top:24px">
+        <a class="cta" href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener">Start your 48-hour sprint</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Carousel -->
+  <section id="portfolio">
+    <div class="container">
+      <h2 class="section-title">Portfolio</h2>
+      <p class="section-sub">Swipe through selected MVPs and UI builds. Seamless infinite loop.</p>
+
+      <div class="carousel-wrapper">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- Images will be loaded dynamically -->
+        </div>
+        <button id="prev" class="carousel-button">‹</button>
+        <button id="next" class="carousel-button">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Note -->
+  <section id="pricing">
+    <div class="container">
+      <h2 class="section-title">Pricing</h2>
+      <p class="section-sub">Fixed-scope MVPs at competitive rates. Request a quote via WhatsApp.</p>
+      <a class="cta" href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener">Get your quote</a>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials">
+    <div class="container">
+      <h2 class="section-title">What clients say</h2>
+      <p class="section-sub">Trust built on delivery: responsive communication, clean code, and performance that feels premium.</p>
+      <div class="grid">
+        <div class="card reveal">
+          <div class="stars">★★★★★</div>
+          <p class="quote">"Turned our Figma into a polished app in record time. Reliable and detail-oriented."</p>
+          <p style="color:var(--muted)">Product Lead, Fintech MVP</p>
+        </div>
+        <div class="card reveal">
+          <div class="stars">★★★★★</div>
+          <p class="quote">"Great performance tuning and Firebase setup. Launch went smoothly."</p>
+          <p style="color:var(--muted)">Founder, E-commerce startup</p>
+        </div>
+        <div class="card reveal">
+          <div class="stars">★★★★☆</div>
+          <p class="quote">"Clear handoff and quick iterations. Exactly what we needed for user testing."</p>
+          <p style="color:var(--muted)">PM, Health app pilot</p>
+        </div>
+      </div>
+      <div style="margin-top:24px">
+        <a class="cta" href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener">Contact Me on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">Let's Build Together</h2>
+      <p class="section-sub">
+        Have a project in mind or just want to discuss an idea? Fill out the form below or reach out on WhatsApp.
+      </p>
+
+      <form id="contactForm" action="https://formspree.io/f/mqeekbag" method="POST" style="display:grid;gap:18px;max-width:700px">
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="tel" name="phone" placeholder="Phone Number (optional)">
+
+        <fieldset>
+          <legend>Services You're Interested In</legend>
+          <div class="checkbox-grid">
+            <label><input type="checkbox" name="services" value="Figma/XD to Flutter"> Figma/XD to Flutter</label>
+            <label><input type="checkbox" name="services" value="API Integration"> API Integration</label>
+            <label><input type="checkbox" name="services" value="Firebase Setup"> Firebase Setup</label>
+            <label><input type="checkbox" name="services" value="State Management"> State Management</label>
+            <label><input type="checkbox" name="services" value="App Performance Optimization"> App Performance Optimization</label>
+            <label><input type="checkbox" name="services" value="Clean, Documented Code"> Clean, Documented Code</label>
+          </div>
+        </fieldset>
+
+        <select name="timeline" required>
+          <option value="" disabled selected>Select your timeline</option>
+          <option value="ASAP">ASAP (48-hour sprint)</option>
+          <option value="1-2 weeks">1-2 weeks</option>
+          <option value="2-4 weeks">2-4 weeks</option>
+          <option value="1+ month">1+ month</option>
+          <option value="Just exploring">Just exploring options</option>
+        </select>
+
+        <textarea name="message" rows="5" placeholder="Tell us about your project, timeline, and goals..."></textarea>
+
+        <button type="submit" class="cta">Send Inquiry</button>
+        
+        <div id="formMessage" style="display: none; padding: 12px; border-radius: 12px; background: rgba(75, 227, 255, 0.1); border: 1px solid var(--accent-2); color: var(--accent-2); text-align: center;"></div>
+      </form>
+
+      <div style="margin-top:20px">
+        <a class="cta secondary" href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener">
+          Or Contact Me on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:10px">
+          <div class="brand-badge">
+            <img src="images/logo.png" alt="MZ App Studio Logo">
+          </div>
+          <div>MZ App Studio</div>
+        </div>
+        <p class="section-sub">Design-to-Flutter builds for Android. Premium quality, rapid delivery, and clean architecture.</p>
+        <a class="cta" href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+      <div>
+        <p style="margin:0 0 8px"><strong>Contact</strong></p>
+        <p class="section-sub" style="margin:0 0 12px">Email: hello@mzappstudio.com</p>
+        <div class="socials">
+          <a href="https://github.com/Muzammil0369" aria-label="GitHub" target="_blank">GitHub</a>
+          <a href="https://www.linkedin.com/in/muzammil-asif-66ba18382/" aria-label="LinkedIn" target="_blank">LinkedIn</a>
+          <a href="https://www.fiverr.com/muzammilcodes" aria-label="Fiverr" target="_blank">Fiverr</a>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="margin-top:18px;color:var(--muted);font-size:13px">
+      © <span id="year"></span> MZ App Studio. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // 1. Current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 2. Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      const icon = mobileMenuBtn.querySelector('i');
+      if (navLinks.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        navLinks.classList.remove('active');
+        const icon = mobileMenuBtn.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // 3. Scroll reveal with improved detection
+    const reveals = document.querySelectorAll('.reveal');
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    reveals.forEach(reveal => {
+      observer.observe(reveal);
+    });
+
+    // 4. SIMPLE WORKING CAROUSEL WITH INFINITE LOOP
+    const portfolioItems = [
+      { 
+        image: 'images/ai chatbots.png', 
+        title: 'AI Chatbot App',
+        device: 'iPhone 15 Pro'
+      },
+      { 
+        image: 'images/ecommerce.png', 
+        title: 'E-commerce App',
+        device: 'Samsung S24 Ultra'
+      },
+      { 
+        image: 'images/finance.png', 
+        title: 'Finance App',
+        device: 'iPhone 15'
+      },
+      { 
+        image: 'images/fitness.png', 
+        title: 'Fitness Tracker App',
+        device: 'Samsung S24'
+      },
+      { 
+        image: 'images/health.png', 
+        title: 'Health App',
+        device: 'iPhone 15 Pro Max'
+      }
+    ];
+
+    const track = document.getElementById('carouselTrack');
+    let currentIndex = 0;
+    let autoSlideInterval;
+    let items = [];
+    let itemWidth = 300;
+    let gap = 30;
+
+    // Create carousel items with CLONES for infinite effect
+    function createCarouselItems() {
+      track.innerHTML = '';
+      
+      // Add clones at the end (first 3 items)
+      portfolioItems.slice(0, 3).forEach((item, index) => {
+        createCarouselItem(item, true);
+      });
+      
+      // Add all original items
+      portfolioItems.forEach((item, index) => {
+        createCarouselItem(item, false);
+      });
+      
+      // Add clones at the beginning (last 3 items)
+      portfolioItems.slice(-3).forEach((item, index) => {
+        createCarouselItem(item, true);
+      });
+      
+      items = document.querySelectorAll('.carousel-item');
+      
+      // Start in the middle (original items)
+      currentIndex = 3; // Start at first original item (after 3 clones at beginning)
+      updateCarousel(true); // Instant update
+    }
+    
+    function createCarouselItem(item, isClone) {
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'carousel-item';
+      if (isClone) itemDiv.classList.add('clone');
+      
+      // Create image with fallback
+      const img = document.createElement('img');
+      img.src = item.image;
+      img.alt = item.title;
+      img.loading = 'lazy';
+      
+      img.onerror = function() {
+        this.src = 'https://via.placeholder.com/300x600/0f2246/4be3ff?text=' + encodeURIComponent(item.title);
+        this.onerror = null;
+      };
+      
+      itemDiv.appendChild(img);
+      
+      // Add device frame overlay
+      const frame = document.createElement('div');
+      frame.className = 'device-frame';
+      itemDiv.appendChild(frame);
+      
+      // Add device badge
+      if (item.device) {
+        const badge = document.createElement('div');
+        badge.className = 'device-badge';
+        badge.textContent = item.device;
+        itemDiv.appendChild(badge);
+      }
+      
+      // Add caption
+      const caption = document.createElement('div');
+      caption.className = 'carousel-caption';
+      caption.textContent = item.title;
+      itemDiv.appendChild(caption);
+      
+      track.appendChild(itemDiv);
+    }
+    
+    function updateCarousel(instant = false) {
+      // Update visual states
+      items.forEach((item, index) => {
+        item.classList.remove('active', 'semi-active');
+        
+        if (index === currentIndex) {
+          item.classList.add('active');
+        } else if (index === currentIndex - 1 || index === currentIndex + 1) {
+          item.classList.add('semi-active');
+        }
+      });
+      
+      // Calculate and apply transform
+      const transformValue = -currentIndex * (itemWidth + gap);
+      
+      if (instant) {
+        track.style.transition = 'none';
+        track.style.transform = `translateX(${transformValue}px)`;
+        // Force reflow
+        track.offsetHeight;
+        track.style.transition = 'transform 0.5s ease';
+      } else {
+        track.style.transform = `translateX(${transformValue}px)`;
+      }
+      
+      // Check if we need to reset position for infinite loop
+      const totalClonesAtStart = 3;
+      const totalClonesAtEnd = 3;
+      const totalOriginal = portfolioItems.length;
+      
+      // If we're at the end clones, reset to original position
+      if (currentIndex >= totalOriginal + totalClonesAtStart) {
+        setTimeout(() => {
+          track.style.transition = 'none';
+          currentIndex = totalClonesAtStart; // Reset to first original item
+          updateCarousel(true);
+        }, 500);
+      }
+      
+      // If we're at the beginning clones, reset to end original position
+      if (currentIndex <= 0) {
+        setTimeout(() => {
+          track.style.transition = 'none';
+          currentIndex = totalClonesAtStart + totalOriginal - 1; // Reset to last original item
+          updateCarousel(true);
+        }, 500);
+      }
+    }
+    
+    function nextSlide() {
+      currentIndex++;
+      updateCarousel();
+    }
+    
+    function prevSlide() {
+      currentIndex--;
+      updateCarousel();
+    }
+    
+    function startAutoSlide() {
+      autoSlideInterval = setInterval(nextSlide, 3000);
+    }
+    
+    function resetAutoSlide() {
+      clearInterval(autoSlideInterval);
+      startAutoSlide();
+    }
+    
+    // Initialize carousel
+    createCarouselItems();
+    startAutoSlide();
+    
+    // Button event listeners
+    document.getElementById('next').addEventListener('click', () => {
+      nextSlide();
+      resetAutoSlide();
+    });
+    
+    document.getElementById('prev').addEventListener('click', () => {
+      prevSlide();
+      resetAutoSlide();
+    });
+    
+    // Pause auto slide on hover
+    track.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+    track.addEventListener('mouseleave', startAutoSlide);
+    
+    // Touch/swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      clearInterval(autoSlideInterval);
+    }, { passive: true });
+    
+    track.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+      startAutoSlide();
+    }, { passive: true });
+    
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+        resetAutoSlide();
+      }
+    }
+    
+    // Handle window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Recalculate item width
+        if (items.length > 0) {
+          itemWidth = items[0].offsetWidth;
+          updateCarousel(true);
+        }
+      }, 250);
+    });
+    
+    // Update after images load
+    window.addEventListener('load', function() {
+      if (items.length > 0) {
+        itemWidth = items[0].offsetWidth;
+        updateCarousel(true);
+      }
+      
+      // Preload images
+      portfolioItems.forEach(item => {
+        const img = new Image();
+        img.src = item.image;
+      });
+      
+      // Preload logo and hero images
+      const logoImg = new Image();
+      logoImg.src = 'images/logo.png';
+      
+      const heroImg = new Image();
+      heroImg.src = 'images/hero.png';
+    });
+
+    // 5. Form handling
+    const contactForm = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+    
+    if (contactForm) {
+      contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        
+        try {
+          const formData = new FormData(contactForm);
+          
+          let isValid = true;
+          const requiredFields = contactForm.querySelectorAll('[required]');
+          requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+              field.style.borderColor = '#ff4757';
+              isValid = false;
+            } else {
+              field.style.borderColor = '';
+            }
+          });
+          
+          if (!isValid) {
+            throw new Error('Please fill all required fields');
+          }
+          
+          const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+          
+          if (response.ok) {
+            formMessage.textContent = 'Thank you! Your message has been sent. I\'ll get back to you soon.';
+            formMessage.style.display = 'block';
+            formMessage.style.background = 'rgba(46, 213, 115, 0.1)';
+            formMessage.style.borderColor = '#2ed573';
+            formMessage.style.color = '#2ed573';
+            contactForm.reset();
+          } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          formMessage.textContent = error.message || 'Something went wrong. Please try again or contact via WhatsApp.';
+          formMessage.style.display = 'block';
+          formMessage.style.background = 'rgba(255, 71, 87, 0.1)';
+          formMessage.style.borderColor = '#ff4757';
+          formMessage.style.color = '#ff4757';
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+          
+          setTimeout(() => {
+            formMessage.style.display = 'none';
+          }, 5000);
+        }
+      });
+    }
+
+    // 6. Smooth scrolling for anchor links with header offset
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          // Close mobile menu if open
+          navLinks.classList.remove('active');
+          const icon = mobileMenuBtn.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+          
+          // Calculate position with header offset (64px header height + 20px extra space)
+          const headerOffset = 84;
+          const elementPosition = targetElement.offsetTop;
+          const offsetPosition = elementPosition - headerOffset;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
