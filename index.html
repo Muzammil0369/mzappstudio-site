@@ -61,21 +61,22 @@ backdrop-filter: saturate(1.2) blur(10px); /* Keep the blur effect */
     .brand{
       display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:0.3px;
       z-index: 101;
+      cursor: pointer;
     }
-    .brand-badge{
-      width:34px;height:34px;border-radius:10px;
-      background:conic-gradient(from 140deg, var(--accent), var(--accent-2), var(--accent));
-      box-shadow:0 0 18px rgba(124,77,255,0.6);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-    }
-    .brand-badge img{
-      width:24px;
-      height:24px;
-      object-fit:contain;
-    }
+.brand-badge{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.brand-badge:hover {
+  transform: scale(1.05); /* Subtle hover effect */
+}
+.brand-badge img{
+  width:50px; /* Make logo larger since no container */
+  height:50px;
+  object-fit:contain;
+  border-radius:8px; /* Optional rounded corners */
+}
     .nav-links{
       display:flex;gap:18px;
       transition: all 0.3s ease;
@@ -1077,6 +1078,14 @@ backdrop-filter: saturate(1.2) blur(10px); /* Keep the blur effect */
         }
       });
     });
+
+// Scroll to top when clicking logo
+document.querySelector('.brand').addEventListener('click', function() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
   </script>
 </body>
 </html>
