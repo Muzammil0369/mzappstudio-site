@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0RKNBQM7MR"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -9,35 +9,28 @@
     gtag('js', new Date());
     gtag('config', 'G-0RKNBQM7MR');
   </script>
-
-<script type="text/javascript">
+  
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "wco90yfzjw");
-</script>
-
+    })(window, document, "clarity", "script", "YOUR_CLARITY_ID");
+  </script>
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes" />
   <title>MZ App Studio — Premium Flutter MVPs | Design to Launch</title>
   <meta name="description" content="We turn your Figma and Adobe XD designs into high-performance Android apps using Flutter. Fast, reliable, and launch-ready MVPs." />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
-  <script>
-  // EMERGENCY FIX: Kill loader if it gets stuck
-  setTimeout(function() {
-    var loader = document.getElementById('pageLoader');
-    if (loader) loader.style.display = 'none';
-    var overlay = document.getElementById('introVideoOverlay');
-    if (overlay) overlay.style.display = 'none';
-  }, 500);
-</script>
 </head>
 <body>
+  <!-- PAGE LOADER -->
   <div class="page-loader" id="pageLoader">
     <div class="loader-content">
       <img src="logo.svg" alt="MZ App Studio" class="loader-logo">
@@ -45,36 +38,51 @@
     </div>
   </div>
 
-  <!-- INTRO VIDEO OVERLAY -->
-  <div class="intro-video-overlay" id="introVideoOverlay">
-    <video class="intro-video-player" id="introVideoPlayer" playsinline muted>
+  <!-- PREMIUM INTRO OVERLAY -->
+  <div class="premium-intro" id="premiumIntro">
+    <video class="premium-intro-video" id="premiumIntroVideo" playsinline muted>
       <source src="hero-video.mp4" type="video/mp4">
     </video>
-    <div class="intro-video-ui">
-      <div class="intro-video-logo">
-        <img src="logo.svg" alt="MZ App Studio">
-        <span>MZ App Studio</span>
+    
+    <!-- Rotate hint for mobile portrait -->
+    <div class="rotate-hint" id="rotateHint">
+      <div class="rotate-icon">
+        <i class="fas fa-sync-alt"></i>
       </div>
-      <div class="intro-video-controls">
-        <button class="intro-skip-btn" id="introSkipBtn">
-          <span>Skip Intro</span>
-          <i class="fas fa-chevron-right"></i>
-        </button>
-        <div class="intro-progress-bar">
-          <div class="intro-progress-fill" id="introProgressFill"></div>
-        </div>
+      <p>Rotate your phone for the best experience</p>
+    </div>
+    
+    <!-- Animated text overlay -->
+    <div class="intro-animated-text" id="introAnimatedText">
+      <div class="text-sequence">
+        <span class="word" id="word1">Design</span>
+        <span class="arrow" id="arrow1">→</span>
+        <span class="word" id="word2">Build</span>
+        <span class="arrow" id="arrow2">→</span>
+        <span class="word highlight" id="word3">Launch</span>
       </div>
-      <div class="intro-unmute-hint" id="introUnmuteHint">
-        <button class="intro-unmute-btn" id="introUnmuteBtn">
-          <i class="fas fa-volume-mute" id="introVolumeIcon"></i>
-          <span>Tap to unmute</span>
-        </button>
+    </div>
+    
+    <!-- Intro controls -->
+    <div class="intro-controls">
+      <button class="intro-skip-btn" id="premiumSkipBtn">
+        <span>Skip Intro</span>
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <div class="intro-progress-bar">
+        <div class="intro-progress-fill" id="premiumProgressFill"></div>
       </div>
+    </div>
+    
+    <!-- Loading indicator -->
+    <div class="intro-loading" id="introLoading">
+      <div class="spinner"></div>
     </div>
   </div>
 
   <div class="scanline"></div>
 
+  <!-- MAIN WEBSITE CONTENT -->
   <header>
     <div class="container">
       <nav class="nav">
@@ -84,17 +92,17 @@
           </div>
           <span>MZ App Studio</span>
         </div>
-<div class="nav-links" id="navLinks">
-  <a href="#services">Services</a>      <!-- Maps to #services section -->
-  <a href="#sprint">Sprint</a>          <!-- Maps to #sprint section -->
-  <a href="#portfolio">Portfolio</a>    <!-- Maps to #portfolio section -->
-  <a href="#pricing">Pricing</a>        <!-- Maps to #pricing section -->
-  <a href="#tech">Tech</a>              <!-- Maps to #tech section -->
-  <a href="#process">Process</a>        <!-- Maps to #process section -->
-  <a href="#testimonials">Reviews</a>   <!-- Maps to #testimonials section -->
-  <a href="#faq">FAQ</a>                <!-- Maps to #faq section -->
-  <a href="#contact">Contact</a>        <!-- Maps to #contact section -->
-</div>
+        <div class="nav-links" id="navLinks">
+          <a href="#services">Services</a>
+          <a href="#sprint">Sprint</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#tech">Tech</a>
+          <a href="#process">Process</a>
+          <a href="#testimonials">Reviews</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </div>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
           <i class="fas fa-bars"></i>
         </button>
@@ -108,66 +116,63 @@
     </div>
   </header>
 
-  <section class="hero">
-    <video class="hero-video" autoplay muted loop playsinline poster="hero-placeholder.svg">
-      <source src="hero-video.mp4" type="video/mp4">
-    </video>
-    <div class="hero-overlay"></div>
-    
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">
-            <span></span>
-            Flutter for Android MVPs
+  <section class="hero" id="hero">
+  <!-- FULL BACKGROUND VIDEO -->
+  <video class="hero-background-video" autoplay muted loop playsinline>
+    <source src="hero-video.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="eyebrow">
+          <span></span>
+          Flutter for Android MVPs
+        </div>
+        <h1>
+          <div class="h1-word"><span>Design</span></div>
+          <div class="h1-word"><span>to</span></div>
+          <div class="h1-word"><span class="h1-highlight">Launch</span></div>
+          <div class="h1-word"><span>Fast<span class="cursor-blink"></span></span></div>
+        </h1>
+        <p class="subtitle">We turn your Figma and Adobe XD designs into high-performance Android apps using Flutter. Premium quality, rapid delivery, and clean architecture for startup MVPs.</p>
+        
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-number" data-target="50">0</span>
+            <span class="stat-label">Projects Delivered</span>
           </div>
-          <h1>
-            <div class="h1-word"><span style="animation-delay: 0s">Design</span></div>
-            <div class="h1-word"><span style="animation-delay: 0.1s">to</span></div>
-            <div class="h1-word"><span style="animation-delay: 0.2s"><span class="h1-highlight">Launch</span></span></div>
-            <div class="h1-word"><span style="animation-delay: 0.3s">Fast<span class="cursor-blink"></span></span></div>
-          </h1>
-          <p class="subtitle">We turn your Figma and Adobe XD designs into high-performance Android apps using Flutter. Premium quality, rapid delivery, and clean architecture for startup MVPs.</p>
-          
-          <div class="stats-grid">
-            <div class="stat-item">
-              <span class="stat-number" data-target="50">0</span>
-              <span class="stat-label">Projects Delivered</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number" data-target="100">0</span>
-              <span class="stat-label">Happy Clients</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number" data-target="3">0</span>
-              <span class="stat-label">Years Experience</span>
-            </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="100">0</span>
+            <span class="stat-label">Happy Clients</span>
           </div>
-          
-          <div class="hero-actions">
-            <a href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener" class="cta">
-              <i class="fab fa-whatsapp"></i> Start Your Project
-            </a>
-            <a href="#contact" class="cta secondary">
-              <i class="fas fa-envelope"></i> Get in Touch
-            </a>
+          <div class="stat-item">
+            <span class="stat-number" data-target="3">0</span>
+            <span class="stat-label">Years Experience</span>
           </div>
         </div>
-        <div class="hero-visual">
-          <video
-            class="hero-visual-video"
-            autoplay
-            muted
-            loop
-            playsinline
-            poster="images/hero-placeholder.svg"
-            style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;">
-            <source src="images/hero-video.mp4" type="video/mp4">
-          </video>
+        
+        <div class="hero-actions">
+          <a href="https://wa.me/qr/AH7WP7O4P4C7P1" target="_blank" rel="noopener" class="cta">
+            <i class="fab fa-whatsapp"></i> Start Your Project
+          </a>
+          <a href="#contact" class="cta secondary">
+            <i class="fas fa-envelope"></i> Get in Touch
+          </a>
         </div>
       </div>
+      
+      <!-- RIGHT SIDE VIDEO CONTAINER -->
+      <div class="hero-visual" id="heroVisualContainer">
+        <div class="hero-video-container" id="heroVideoContainer">
+          <!-- Intro video will transition here -->
+        </div>
+        
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <section id="services">
     <div class="container">
@@ -222,39 +227,18 @@
     </div>
   </section>
 
-    <section id="tech">
+  <section id="tech">
     <div class="container">
       <h2 class="section-title">Tech Stack</h2>
       <p class="section-sub">Modern tools and frameworks we use.</p>
       <div class="tech-grid">
-        <div class="tech-item reveal">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="Flutter" style="width:40px;height:40px;">
-          <span>Flutter</span>
-        </div>
-        <div class="tech-item reveal">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg" alt="Dart" style="width:40px;height:40px;">
-          <span>Dart</span>
-        </div>
-        <div class="tech-item reveal">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" alt="Firebase" style="width:40px;height:40px;">
-          <span>Firebase</span>
-        </div>
-        <div class="tech-item reveal">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="Figma" style="width:40px;height:40px;">
-          <span>Figma</span>
-        </div>
-        <div class="tech-item reveal">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git" style="width:40px;height:40px;">
-          <span>Git</span>
-        </div>
-        <div class="tech-item reveal">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code" style="width:40px;height:40px;">
-          <span>VS Code</span>
-        </div>
-        <div class="tech-item reveal">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" alt="Android Studio" style="width:40px;height:40px;">
-          <span>Android Studio</span>
-        </div>
+        <div class="tech-item reveal"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="Flutter"><span>Flutter</span></div>
+        <div class="tech-item reveal"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg" alt="Dart"><span>Dart</span></div>
+        <div class="tech-item reveal"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" alt="Firebase"><span>Firebase</span></div>
+        <div class="tech-item reveal"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="Figma"><span>Figma</span></div>
+        <div class="tech-item reveal"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git"><span>Git</span></div>
+        <div class="tech-item reveal"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code"><span>VS Code</span></div>
+        <div class="tech-item reveal"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" alt="Android Studio"><span>Android Studio</span></div>
       </div>
     </div>
   </section>
@@ -292,69 +276,21 @@
     </div>
   </section>
 
- <!-- FAQ SECTION -->
-<section id="faq">
-  <div class="container">
-    <h2 class="section-title">Frequently Asked Questions</h2>
-    <p class="section-sub">Everything you need to know about our development process</p>
-    <div class="faq-grid">
-      <div class="faq-item">
-        <div class="faq-question">
-          <h3>How long does a typical MVP take?</h3>
-          <i class="fas fa-plus"></i>
-        </div>
-        <div class="faq-answer">
-          <p>Our 48-hour sprint delivers core functionality for simple MVPs. More complex projects typically take 1-2 weeks depending on features and integrations.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <h3>Do you provide source code?</h3>
-          <i class="fas fa-plus"></i>
-        </div>
-        <div class="faq-answer">
-          <p>Yes! You receive complete, well-documented source code with Git repository access. Code is clean, organized, and follows Flutter best practices.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <h3>What's included in post-launch support?</h3>
-          <i class="fas fa-plus"></i>
-        </div>
-        <div class="faq-answer">
-          <p>30 days of bug fixes, minor adjustments, and deployment support. Extended maintenance packages are available for ongoing updates.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <h3>Can you work with existing codebases?</h3>
-          <i class="fas fa-plus"></i>
-        </div>
-        <div class="faq-answer">
-          <p>Absolutely! We can integrate with existing Flutter projects, add features, fix bugs, or refactor code for better performance.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <h3>What design formats do you accept?</h3>
-          <i class="fas fa-plus"></i>
-        </div>
-        <div class="faq-answer">
-          <p>Figma and Adobe XD are preferred. We can also work with Sketch files or detailed wireframes/specifications.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <h3>Do you publish apps to Play Store?</h3>
-          <i class="fas fa-plus"></i>
-        </div>
-        <div class="faq-answer">
-          <p>Yes! We provide signed APK/AAB files ready for upload. We can also guide you through the Play Store submission process.</p>
-        </div>
+  <section id="faq">
+    <div class="container">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-sub">Everything you need to know about our development process</p>
+      <div class="faq-grid">
+        <div class="faq-item"><div class="faq-question"><h3>How long does a typical MVP take?</h3><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Our 48-hour sprint delivers core functionality for simple MVPs. More complex projects typically take 1-2 weeks depending on features and integrations.</p></div></div>
+        <div class="faq-item"><div class="faq-question"><h3>Do you provide source code?</h3><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Yes! You receive complete, well-documented source code with Git repository access. Code is clean, organized, and follows Flutter best practices.</p></div></div>
+        <div class="faq-item"><div class="faq-question"><h3>What's included in post-launch support?</h3><i class="fas fa-plus"></i></div><div class="faq-answer"><p>30 days of bug fixes, minor adjustments, and deployment support. Extended maintenance packages are available for ongoing updates.</p></div></div>
+        <div class="faq-item"><div class="faq-question"><h3>Can you work with existing codebases?</h3><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Absolutely! We can integrate with existing Flutter projects, add features, fix bugs, or refactor code for better performance.</p></div></div>
+        <div class="faq-item"><div class="faq-question"><h3>What design formats do you accept?</h3><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Figma and Adobe XD are preferred. We can also work with Sketch files or detailed wireframes/specifications.</p></div></div>
+        <div class="faq-item"><div class="faq-question"><h3>Do you publish apps to Play Store?</h3><i class="fas fa-plus"></i></div><div class="faq-answer"><p>Yes! We provide signed APK/AAB files ready for upload. We can also guide you through the Play Store submission process.</p></div></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
   <section id="contact">
     <div class="container">
       <h2 class="section-title">Let's Build Together</h2>
@@ -430,6 +366,5 @@
   <button class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></button>
 
   <script src="script.js"></script>
-
 </body>
 </html>

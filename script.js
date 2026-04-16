@@ -1,254 +1,241 @@
-// MZ App Studio - WITH INTRO VIDEO (SAFE VERSION)
+// MZ App Studio - COMPLETE WORKING VERSION
 (function() {
   "use strict";
   
-  console.log('🎬 MZ App Studio - Loading with Intro Video...');
+  console.log('🎬 MZ App Studio - Loading...');
   
   // ============================================================
-  // STEP 1: ENSURE SCROLLING IS ENABLED
+  // ENABLE SCROLLING
   // ============================================================
-  (function enableScrolling() {
-    var style = document.createElement('style');
-    style.textContent = `
-      html, body {
-        overflow: auto !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        height: auto !important;
-        scroll-behavior: smooth !important;
-      }
-    `;
-    document.head.appendChild(style);
-    console.log('✅ Scrolling enabled');
-  })();
-  
-  // ============================================================
-  // STEP 2: INTRO VIDEO - PROPER IMPLEMENTATION
-  // ============================================================
-  var introOverlay = document.getElementById('introVideoOverlay');
-  var introVideo = document.getElementById('introVideoPlayer');
-  var skipBtn = document.getElementById('introSkipBtn');
-  var progressFill = document.getElementById('introProgressFill');
-  var unmuteBtn = document.getElementById('introUnmuteBtn');
-  var volumeIcon = document.getElementById('introVolumeIcon');
-  var pageLoader = document.getElementById('pageLoader');
-  
-  // Track if intro has been shown before (session storage)
-  var introShown = sessionStorage.getItem('introShown');
-  
-  function completelyRemoveIntro() {
-    console.log('🗑️ Removing intro overlay completely');
-    
-    if (introOverlay) {
-      introOverlay.style.opacity = '0';
-      introOverlay.style.transition = 'opacity 0.5s ease';
-      
-      setTimeout(function() {
-        if (introOverlay) {
-          introOverlay.remove(); // COMPLETELY REMOVE FROM DOM
-        }
-        if (introVideo) {
-          introVideo.pause();
-          introVideo.src = ''; // Stop loading
-        }
-        console.log('✅ Intro removed from DOM');
-      }, 500);
+  var style = document.createElement('style');
+  style.textContent = `
+    html, body {
+      overflow: auto !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      height: auto !important;
+      scroll-behavior: smooth !important;
     }
-    
-    // Mark as shown for this session
-    sessionStorage.setItem('introShown', 'true');
+  `;
+  document.head.appendChild(style);
+  
+  // ============================================================
+  // PREMIUM INTRO SYSTEM
+  // ============================================================
+  var intro = document.getElementById('premiumIntro');
+  var introVideo = document.getElementById('premiumIntroVideo');
+  var skipBtn = document.getElementById('premiumSkipBtn');
+  var progressFill = document.getElementById('premiumProgressFill');
+  var rotateHint = document.getElementById('rotateHint');
+  var animatedText = document.getElementById('introAnimatedText');
+  var introControls = document.querySelector('.intro-controls');
+  var loadingSpinner = document.getElementById('introLoading');
+  var pageLoader = document.getElementById('pageLoader');
+  var heroContainer = document.getElementById('heroVideoContainer');
+  var heroVisual = document.getElementById('heroVisualContainer');
+  
+  var introComplete = false;
+  var animationsStarted = false;
+  
+  // Remove page loader
+  if (pageLoader) {
+    setTimeout(function() {
+      pageLoader.classList.add('fade-out');
+      setTimeout(function() { 
+        if (pageLoader) pageLoader.style.display = 'none'; 
+      }, 500);
+    }, 200);
   }
   
+  // Check orientation
+  function checkOrientation() {
+    var isPortrait = window.innerHeight > window.innerWidth;
+    var isMobile = window.innerWidth <= 768;
+    
+    if (isPortrait && isMobile) {
+      if (rotateHint) rotateHint.classList.add('show');
+      if (animatedText) animatedText.classList.remove('show');
+      if (introControls) introControls.classList.remove('show');
+    } else {
+      if (rotateHint) rotateHint.classList.remove('show');
+      if (animatedText) animatedText.classList.add('show');
+      if (introControls) introControls.classList.add('show');
+      
+      if (!animationsStarted) {
+        startTextAnimations();
+        animationsStarted = true;
+      }
+    }
+  }
+  
+  // Animated text
+  function startTextAnimations() {
+    var word1 = document.getElementById('word1');
+    var arrow1 = document.getElementById('arrow1');
+    var word2 = document.getElementById('word2');
+    var arrow2 = document.getElementById('arrow2');
+    var word3 = document.getElementById('word3');
+    
+    setTimeout(function() { if (word1) word1.classList.add('animate'); }, 300);
+    setTimeout(function() { if (arrow1) arrow1.classList.add('animate'); }, 800);
+    setTimeout(function() { if (word2) word2.classList.add('animate'); }, 1300);
+    setTimeout(function() { if (arrow2) arrow2.classList.add('animate'); }, 1800);
+    setTimeout(function() { if (word3) word3.classList.add('animate'); }, 2300);
+  }
+  
+// Transition to hero container (KEEPS BACKGROUND VIDEO)
+function transitionToHero() {
+  if (introComplete) return;
+  introComplete = true;
+  
+  console.log('🎬 Transitioning to hero container...');
+  
+  sessionStorage.setItem('premiumIntroShown', 'true');
+  
+  var video = introVideo;
+  var videoSource = video.querySelector('source').src;
+  
+  // Create hero container video (right side)
+  var heroVideo = document.createElement('video');
+  heroVideo.className = 'hero-container-video';
+  heroVideo.muted = true;
+  heroVideo.loop = true;
+  heroVideo.playsInline = true;
+  heroVideo.autoplay = true;
+  heroVideo.style.width = '100%';
+  heroVideo.style.height = '100%';
+  heroVideo.style.objectFit = 'cover';
+  heroVideo.style.borderRadius = 'var(--radius-lg)';
+  
+  var source = document.createElement('source');
+  source.src = videoSource;
+  source.type = 'video/mp4';
+  heroVideo.appendChild(source);
+  
+  if (heroContainer) {
+    heroContainer.innerHTML = '';
+    heroContainer.appendChild(heroVideo);
+    heroVideo.load();
+    heroVideo.play().catch(function(err) {
+      console.log('Hero container video play:', err);
+    });
+  }
+  
+  // Fade out intro
+  if (animatedText) animatedText.style.opacity = '0';
+  if (introControls) introControls.style.opacity = '0';
+  
+  setTimeout(function() {
+    if (intro) intro.classList.add('fade-out');
+    if (video) video.pause();
+  }, 100);
+  
+  setTimeout(function() {
+    if (intro) intro.style.display = 'none';
+    console.log('✅ Intro complete!');
+  }, 800);
+}
+  
+  // Skip intro
   function skipIntro() {
     console.log('⏭️ Skipping intro');
-    completelyRemoveIntro();
+    transitionToHero();
   }
   
-  // If intro was already shown this session, skip it
-  if (introShown === 'true') {
-    console.log('📌 Intro already shown this session, skipping');
-    if (introOverlay) introOverlay.remove();
-    if (pageLoader) {
-      pageLoader.classList.add('fade-out');
-      setTimeout(function() { if (pageLoader) pageLoader.remove(); }, 500);
-    }
-  } else {
-    // Show intro video
-    if (pageLoader) {
-      pageLoader.classList.add('fade-out');
-      setTimeout(function() { if (pageLoader) pageLoader.remove(); }, 500);
-    }
+  // Initialize intro
+  function initIntro() {
+    if (!intro || !introVideo) return;
     
-    if (introOverlay && introVideo) {
-      introOverlay.classList.add('active');
-      
-      // Try to play video
-      var playPromise = introVideo.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(function(error) {
-          console.log('ℹ️ Autoplay blocked, user can click unmute or skip');
-        });
-      }
-      
-      // Update progress bar
-      introVideo.addEventListener('timeupdate', function() {
-        if (introVideo.duration && progressFill) {
-          var pct = (introVideo.currentTime / introVideo.duration) * 100;
-          progressFill.style.width = pct + '%';
-        }
-      });
-      
-      // When video ends, remove intro
-      introVideo.addEventListener('ended', function() {
-        console.log('🎬 Video ended');
-        completelyRemoveIntro();
-      });
-      
-      // If video errors, skip intro
-      introVideo.addEventListener('error', function() {
-        console.log('⚠️ Video error, skipping');
-        completelyRemoveIntro();
-      });
-      
-      // Skip button
-      if (skipBtn) {
-        skipBtn.addEventListener('click', skipIntro);
-      }
-      
-      // Unmute button
-      if (unmuteBtn) {
-        unmuteBtn.addEventListener('click', function() {
-          introVideo.muted = !introVideo.muted;
-          if (volumeIcon) {
-            if (introVideo.muted) {
-              volumeIcon.className = 'fas fa-volume-mute';
-              unmuteBtn.querySelector('span').textContent = 'Tap to unmute';
-            } else {
-              volumeIcon.className = 'fas fa-volume-up';
-              unmuteBtn.querySelector('span').textContent = 'Mute';
-            }
-          }
-        });
-      }
-      
-      // Click on overlay background to skip (optional)
-      introOverlay.addEventListener('click', function(e) {
-        if (e.target === introOverlay) {
-          skipIntro();
-        }
-      });
-      
-      // Auto-skip after 10 seconds max (safety)
-      setTimeout(function() {
-        if (introOverlay && introOverlay.parentNode) {
-          console.log('⏰ Auto-skip timeout');
-          completelyRemoveIntro();
-        }
-      }, 10000);
-    }
-  }
-  
-  // ============================================================
-  // STEP 3: SIMPLE SCROLL FUNCTION
-  // ============================================================
-  window.scrollToSection = function(sectionId) {
-    console.log('🎯 Scrolling to:', sectionId);
-    
-    var section = document.getElementById(sectionId);
-    if (!section) {
-      console.error('Section not found:', sectionId);
+    if (sessionStorage.getItem('premiumIntroShown') === 'true') {
+      transitionToHero();
       return;
     }
     
-    // Close mobile menu
+    introVideo.muted = true;
+    
+    if (loadingSpinner) loadingSpinner.classList.add('show');
+    
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
+    
+    introVideo.addEventListener('loadeddata', function() {
+      if (loadingSpinner) loadingSpinner.classList.remove('show');
+    });
+    
+    introVideo.addEventListener('timeupdate', function() {
+      if (introVideo.duration && progressFill) {
+        progressFill.style.width = (introVideo.currentTime / introVideo.duration) * 100 + '%';
+      }
+    });
+    
+    introVideo.addEventListener('ended', transitionToHero);
+    introVideo.addEventListener('error', function() {
+      if (loadingSpinner) loadingSpinner.classList.remove('show');
+      setTimeout(transitionToHero, 500);
+    });
+    
+    introVideo.play().catch(function() {});
+    
+    if (skipBtn) skipBtn.addEventListener('click', skipIntro);
+    
+    intro.addEventListener('click', function(e) {
+      if (e.target === intro) skipIntro();
+    });
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && intro && intro.style.display !== 'none') {
+        skipIntro();
+      }
+    });
+    
+    setTimeout(function() {
+      if (!introComplete && intro) transitionToHero();
+    }, 15000);
+  }
+  
+  initIntro();
+  
+  // ============================================================
+  // NAVIGATION SYSTEM
+  // ============================================================
+  window.scrollToSection = function(sectionId) {
+    var section = document.getElementById(sectionId);
+    if (!section) return;
+    
     var navLinks = document.getElementById('navLinks');
     if (navLinks) navLinks.classList.remove('active');
     
-    // Get header height
     var header = document.querySelector('header');
     var headerHeight = header ? header.offsetHeight : 65;
-    
-    // Calculate position
     var rect = section.getBoundingClientRect();
     var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     var targetPosition = scrollTop + rect.top - headerHeight;
     
-    // SCROLL!
-    window.scrollTo({
-      top: targetPosition,
-      behavior: 'smooth'
-    });
-    
-    // Update URL
+    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     window.location.hash = sectionId;
   };
   
-  // ============================================================
-  // STEP 4: ATTACH CLICK HANDLERS
-  // ============================================================
-  function attachClickHandlers() {
-    var allLinks = document.querySelectorAll('a[href^="#"]');
-    var count = 0;
-    
-    allLinks.forEach(function(link) {
+  function attachNavListeners() {
+    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
       var href = link.getAttribute('href');
+      if (!href || href === '#' || href.includes('wa.me') || href.includes('mailto:')) return;
       
-      if (!href || href === '#' || href.includes('wa.me') || href.includes('mailto:')) {
-        return;
-      }
-      
-      // Remove existing listeners
       var newLink = link.cloneNode(true);
       link.parentNode.replaceChild(newLink, link);
       
-      // Add fresh handler
       newLink.addEventListener('click', function(e) {
         e.preventDefault();
-        e.stopPropagation();
-        
-        var targetId = this.getAttribute('href').substring(1);
-        window.scrollToSection(targetId);
-        
-        return false;
+        window.scrollToSection(this.getAttribute('href').substring(1));
       });
-      
-      count++;
-    });
-    
-    console.log('✅ Attached to', count, 'navigation links');
-  }
-  
-  attachClickHandlers();
-  setTimeout(attachClickHandlers, 100);
-  setTimeout(attachClickHandlers, 500);
-  
-  // ============================================================
-  // STEP 5: HANDLE INITIAL HASH
-  // ============================================================
-  window.addEventListener('load', function() {
-    var hash = window.location.hash;
-    if (hash && hash !== '#') {
-      var targetId = hash.substring(1);
-      setTimeout(function() {
-        window.scrollToSection(targetId);
-      }, 300);
-    }
-  });
-  
-  // ============================================================
-  // STEP 6: BRAND LOGO
-  // ============================================================
-  var brandLogo = document.getElementById('brandLogo');
-  if (brandLogo) {
-    brandLogo.addEventListener('click', function(e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      window.location.hash = '';
     });
   }
   
+  attachNavListeners();
+  setTimeout(attachNavListeners, 200);
+  
   // ============================================================
-  // STEP 7: MOBILE MENU
+  // MOBILE MENU
   // ============================================================
   var mobileBtn = document.getElementById('mobileMenuBtn');
   var navLinks = document.getElementById('navLinks');
@@ -276,30 +263,18 @@
   }
   
   // ============================================================
-  // STEP 8: HEADER SCROLL EFFECT
+  // HEADER SCROLL
   // ============================================================
   window.addEventListener('scroll', function() {
     var header = document.querySelector('header');
-    if (header) {
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-    }
+    if (header) header.classList.toggle('scrolled', window.scrollY > 50);
     
     var backToTop = document.getElementById('backToTop');
-    if (backToTop) {
-      if (window.scrollY > 400) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
-      }
-    }
+    if (backToTop) backToTop.classList.toggle('visible', window.scrollY > 400);
   });
   
   // ============================================================
-  // STEP 9: BACK TO TOP
+  // BACK TO TOP
   // ============================================================
   var backToTop = document.getElementById('backToTop');
   if (backToTop) {
@@ -309,7 +284,7 @@
   }
   
   // ============================================================
-  // STEP 10: THEME TOGGLE
+  // THEME TOGGLE
   // ============================================================
   var themeToggle = document.getElementById('themeToggle');
   if (themeToggle) {
@@ -339,11 +314,24 @@
   }
   
   // ============================================================
-  // STEP 11: ACTIVE NAV HIGHLIGHT
+  // BRAND LOGO
   // ============================================================
+  var brandLogo = document.getElementById('brandLogo');
+  if (brandLogo) {
+    brandLogo.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.location.hash = '';
+    });
+  }
+  
+  // ============================================================
+  // ACTIVE NAV HIGHLIGHT
+  // ============================================================
+  var sections = document.querySelectorAll('section[id]');
+  var navItems = document.querySelectorAll('.nav-links a');
+  
   function updateActiveNav() {
-    var sections = document.querySelectorAll('section[id]');
-    var navItems = document.querySelectorAll('.nav-links a');
     var scrollPos = window.scrollY + 150;
     
     sections.forEach(function(section) {
@@ -366,7 +354,7 @@
   updateActiveNav();
   
   // ============================================================
-  // STEP 12: FAQ ACCORDION
+  // FAQ ACCORDION
   // ============================================================
   document.querySelectorAll('.faq-question').forEach(function(q) {
     q.addEventListener('click', function() {
@@ -382,7 +370,7 @@
   });
   
   // ============================================================
-  // STEP 13: STATS COUNTER
+  // STATS COUNTER
   // ============================================================
   var stats = document.querySelectorAll('.stat-number');
   if (stats.length) {
@@ -413,7 +401,7 @@
   }
   
   // ============================================================
-  // STEP 14: PORTFOLIO CAROUSEL
+  // PORTFOLIO CAROUSEL
   // ============================================================
   var track = document.getElementById('carouselTrack');
   if (track) {
@@ -439,11 +427,9 @@
     
     function buildCarousel() {
       track.innerHTML = '';
-      
       items.slice(0, 3).forEach(function(item) { track.appendChild(createItem(item)); });
       items.forEach(function(item) { track.appendChild(createItem(item)); });
       items.slice(-3).forEach(function(item) { track.appendChild(createItem(item)); });
-      
       updateCarousel(true);
     }
     
@@ -495,7 +481,7 @@
   }
   
   // ============================================================
-  // STEP 15: CONTACT FORM
+  // CONTACT FORM
   // ============================================================
   var form = document.getElementById('contactForm');
   if (form) {
@@ -535,7 +521,7 @@
   }
   
   // ============================================================
-  // STEP 16: NEWSLETTER
+  // NEWSLETTER
   // ============================================================
   var newsletter = document.getElementById('newsletterForm');
   if (newsletter) {
@@ -547,7 +533,7 @@
   }
   
   // ============================================================
-  // STEP 17: REVEAL ANIMATIONS
+  // REVEAL ANIMATIONS
   // ============================================================
   var revealObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
@@ -562,11 +548,11 @@
   });
   
   // ============================================================
-  // STEP 18: YEAR IN FOOTER
+  // YEAR
   // ============================================================
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
   
-  console.log('✅ MZ App Studio - Fully Loaded!');
+  console.log('✅ MZ App Studio - Ready!');
   
 })();
