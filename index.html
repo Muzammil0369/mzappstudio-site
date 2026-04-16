@@ -10,6 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+  <script>
+  // EMERGENCY FIX: Kill loader if it gets stuck
+  setTimeout(function() {
+    var loader = document.getElementById('pageLoader');
+    if (loader) loader.style.display = 'none';
+    var overlay = document.getElementById('introVideoOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }, 500);
+</script>
 </head>
 <body>
   <div class="page-loader" id="pageLoader">
@@ -58,17 +67,17 @@
           </div>
           <span>MZ App Studio</span>
         </div>
-        <div class="nav-links" id="navLinks">
-          <a href="#services">Services</a>
-          <a href="#sprint">Sprint</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#tech-stack">Tech</a>
-          <a href="#process">Process</a>
-          <a href="#testimonials">Reviews</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Contact</a>
-        </div>
+<div class="nav-links" id="navLinks">
+  <a href="#services">Services</a>      <!-- Maps to #services section -->
+  <a href="#sprint">Sprint</a>          <!-- Maps to #sprint section -->
+  <a href="#portfolio">Portfolio</a>    <!-- Maps to #portfolio section -->
+  <a href="#pricing">Pricing</a>        <!-- Maps to #pricing section -->
+  <a href="#tech">Tech</a>              <!-- Maps to #tech section -->
+  <a href="#process">Process</a>        <!-- Maps to #process section -->
+  <a href="#testimonials">Reviews</a>   <!-- Maps to #testimonials section -->
+  <a href="#faq">FAQ</a>                <!-- Maps to #faq section -->
+  <a href="#contact">Contact</a>        <!-- Maps to #contact section -->
+</div>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
           <i class="fas fa-bars"></i>
         </button>
@@ -138,9 +147,9 @@
             style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;">
             <source src="images/hero-video.mp4" type="video/mp4">
           </video>
-          <div class="scroll-indicator">
+          <!-- <div class="scroll-indicator">
             <i class="fas fa-chevron-down"></i>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -199,7 +208,7 @@
     </div>
   </section>
 
-    <section id="tech-stack">
+    <section id="tech">
     <div class="container">
       <h2 class="section-title">Tech Stack</h2>
       <p class="section-sub">Modern tools and frameworks we use.</p>

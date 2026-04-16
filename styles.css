@@ -22,7 +22,9 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
+  overflow-y: scroll !important;  /* 🔥 FIX: Force vertical scroll */
+  overflow-x: hidden;
 }
 
 html, body {
@@ -34,8 +36,10 @@ body {
   color: var(--text-primary);
   background: var(--bg-dark);
   overflow-x: hidden;
+  overflow-y: auto !important;  /* 🔥 FIX: Allow vertical scrolling */
   padding-top: 64px;
   position: relative;
+  min-height: 100vh;  /* 🔥 FIX: Ensure body has height */
 }
 
 body::before {
@@ -354,6 +358,7 @@ header.scrolled .nav {
 .page-loader.fade-out {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
 .loader-content {
@@ -409,17 +414,20 @@ header.scrolled .nav {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
 .intro-video-overlay.active {
   opacity: 1;
   visibility: visible;
+  pointer-events: all;
 }
 
 .intro-video-overlay.fade-out {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
 .intro-video-player {
@@ -1779,11 +1787,12 @@ section {
 .faq-answer {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-out;
+  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
 }
 
 .faq-item.active .faq-answer {
-  max-height: 150px;
+  max-height: 1000px; /* Large enough to fit content */
+  transition: max-height 1s ease-in-out;
 }
 
 .faq-answer p {
@@ -2411,14 +2420,14 @@ img, video {
 
 
 /* CLICK FIX */
-header, nav, .nav, .nav-links, .nav-links a {
-  pointer-events: auto !important;
-  z-index: 99999 !important;
+header {
+  z-index: 10000; /* Higher than page-loader (9999) and intro-video-overlay (9998) */
 }
 
-.hero-video, .hero-overlay {
-  pointer-events: none !important;
+.nav-links.active {
+  z-index: 10001;
 }
 
-
-.hero-video, .hero-overlay { pointer-events: none; }
+.hero-video, .hero-overlay, .scanline {
+  pointer-events: none;
+}
